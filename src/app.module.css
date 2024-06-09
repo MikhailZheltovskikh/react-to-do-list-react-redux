@@ -1,0 +1,54 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+.app {
+	max-width: 600px;
+	width: 100%;
+	margin: 0 auto;
+	margin-top: 50px;
+}
+
+h1 {
+	margin-bottom: 20px;
+	text-align: center;
+	font-size: 48px;
+	line-height: 1.2;
+	font-weight: 700;
+	color: #000;
+}
+
+.toDoList{
+	display: flex;
+	flex-direction: column;
+	row-gap: 20px;
+	margin: 0;
+	padding: 0;
+}
+
+.sort__btn{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-bottom: 20px;
+	height: 40px;
+	padding: 0 20px;
+	font-size: 16px;
+	line-height: 1;
+	font-weight: 400;
+	color: #000;
+	background-color: transparent;
+	border: 1px solid #000;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: all .2s ease;
+}
+
+.sort__btn:hover{
+	background-color: #000;
+	color: #fff;
+}
+
+

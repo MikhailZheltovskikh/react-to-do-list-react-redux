@@ -1,0 +1,19 @@
+{
+  "todo": [
+    {
+      "title": "Уборка",
+      "completed": false,
+      "id": 1
+    },
+    {
+      "title": "Ремонт",
+      "completed": false,
+      "id": 2
+    },
+    {
+      "title": "Стирка",
+      "completed": false,
+      "id": 3
+    }
+  ]
+}
