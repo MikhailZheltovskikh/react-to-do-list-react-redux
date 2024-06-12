@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import styles from './ToDo-List-item.module.css';
 
-const TodoItem = ({ id, completed, title, updateTodo, deleteTodo, updateStatusTodo }) => {
+
+const TodoItem = ({ id, completed, title, updatePost, deletePost, updateStatus }) => {
 	const [isEdit, setIsEdit] = useState(false);
 
 	const [value, setValue] = useState(title);
@@ -15,12 +16,12 @@ const TodoItem = ({ id, completed, title, updateTodo, deleteTodo, updateStatusTo
 	};
 
 	const onSubmit = async () => {
-		await updateTodo(id, value);
+		await updatePost(id, value);
 		handleEdit();
 	};
 
 	const hendelDelete = () => {
-		 deleteTodo(id);
+		deletePost(id);
 	};
 
 	return (
@@ -42,7 +43,7 @@ const TodoItem = ({ id, completed, title, updateTodo, deleteTodo, updateStatusTo
 						type="checkbox"
 						name="checkboxInput"
 						checked={completed}
-						onChange={(e) => updateStatusTodo(id, e.target.checked)}
+						onChange={(e) => updateStatus(id, e.target.checked)}
 					/>
 					<div className={styles.toDoList__item__text}>{title}</div>
 					<button
@@ -61,3 +62,8 @@ const TodoItem = ({ id, completed, title, updateTodo, deleteTodo, updateStatusTo
 };
 
 export default TodoItem;
+
+
+// TodoItem.propTypes ={
+// 	deletePost: PropTypes.func,
+// }

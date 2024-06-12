@@ -1,152 +1,59 @@
 import { useEffect, useState } from 'react';
 import styles from './app.module.css';
 import { Form, ToDoListItem, Loader, Serach } from './Components';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+	loadTodo,
+	deleteTodo,
+	updateTodo,
+	updateStatusTodo,
+	creatingTodo,
+	sortTodo,
+} from './store/postReducer';
 
 export const App = () => {
-	const [isLoading, setIsLoading] = useState(true);
-	const [todos, setTodos] = useState([]);
 	const [search, setSearch] = useState();
+	const [isSorted, setIsSorted] = useState(false);
+	const dispatch = useDispatch();
+	const posts = useSelector((state) => state.todo.todos);
+	const isLoading = useSelector((state) => state.todo.isLoading);
 
-	const getTodo = async () => {
-		setIsLoading(true);
-		try {
-			const response = await fetch('http://localhost:3005/todo');
-			const data = await response.json();
-			setTodos(data);
-			setIsLoading(false);
-		} catch (error) {
-			console.log(error);
-			setIsLoading(false);
-		}
+	const deletePost = (id) => {
+		dispatch(deleteTodo(id));
 	};
 
-	const creatingTodo = async (event) => {
-		setIsLoading(true);
-		event.preventDefault();
-
-		const form = event.target;
-		const todoTitle = form.elements.textToDo.value;
-
-		try {
-			const response = await fetch(`http://localhost:3005/todo/`, {
-				method: 'POST',
-				headers: {
-					'Content-type': 'application/json; charset=UTF-8',
-				},
-				body: JSON.stringify({
-					title: todoTitle,
-					completed: false,
-				}),
-			});
-
-			const createPost = await response.json();
-			const updatedPost = todos.concat(createPost);
-			form.reset();
-
-			setTodos(updatedPost);
-
-			setIsLoading(false);
-		} catch (error) {
-			console.log(error);
-			setIsLoading(false);
-		}
+	const updatePost = (id, value) => {
+		dispatch(updateTodo(id, value));
 	};
 
-	const updateTodo = async (id, payload) => {
-		setIsLoading(true);
-		try {
-			const response = await fetch(`http://localhost:3005/todo/${id}`, {
-				method: 'PATCH',
-				headers: {
-					'Content-type': 'application/json; charset=UTF-8',
-				},
-				body: JSON.stringify({ title: payload }),
-			});
-
-			const updatePost = await response.json();
-
-			//  поиск по индексу
-			const updateIndexPost = todos.findIndex((post) => post.id === id);
-			const copyTodo = todos.slice();
-			copyTodo[updateIndexPost] = updatePost;
-
-			setTodos(copyTodo);
-
-			setIsLoading(false);
-		} catch (error) {
-			console.log(error);
-			setIsLoading(false);
-		}
+	const updateStatus = (id, checked) => {
+		dispatch(updateStatusTodo(id, checked));
 	};
 
-	const deleteTodo = async (id) => {
-		setIsLoading(true);
-
-		try {
-			await fetch(`http://localhost:3005/todo/${id}`, {
-				method: 'DELETE',
-			});
-			setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
-			setIsLoading(false);
-		} catch (error) {
-			console.log(error);
-			setIsLoading(false);
-		}
-	};
-
-	const updateStatusTodo = async (id, checked) => {
-		setIsLoading(true);
-
-		try {
-			const response = await fetch(`http://localhost:3005/todo/${id}`, {
-				method: 'PATCH',
-				headers: { 'Content-Type': 'application/json;charset=utf-8' },
-				body: JSON.stringify({
-					completed: checked,
-				}),
-			});
-
-			const updatePost = await response.json();
-
-			//  поиск по индексу
-			const updateIndexPost = todos.findIndex((post) => post.id === id);
-			const copyTodo = todos.slice();
-			copyTodo[updateIndexPost] = updatePost;
-
-			setTodos(copyTodo);
-
-			setIsLoading(false);
-		} catch (error) {
-			console.log(error);
-			setIsLoading(false);
-		}
+	const creating = (event) => {
+		dispatch(creatingTodo(event));
 	};
 
 	const searchTodo = (event) => {
 		setSearch(event);
 	};
 
-	const hendelSertTodo = () => {
-
-		const sortedTodos = [...todos].sort((a, b) => {
-			if (a.title < b.title) return -1;
-			if (a.title > b.title) return 1;
-			return 0;
-		});
-		setTodos(sortedTodos);
+	const hendelSortTodo = () => {
+		dispatch(sortTodo());
+		setIsSorted(true);
 	};
 
 	useEffect(() => {
-		getTodo();
+		dispatch(loadTodo());
 	}, []);
 
 	return (
 		<div className={styles.app}>
 			<h1>To-Do</h1>
 			<Serach searchTodo={searchTodo} />
-			<Form onSubmit={creatingTodo} />
+			<Form onSubmit={creating} />
 
-			<button className={styles.sort__btn} onClick={hendelSertTodo}>
+			<button className={styles.sort__btn} onClick={hendelSortTodo}>
 				Сортировка ⇩
 			</button>
 
@@ -156,10 +63,10 @@ export const App = () => {
 				) : (
 					<>
 						<ToDoListItem
-							todos={todos}
-							updateTodo={updateTodo}
-							deleteTodo={deleteTodo}
-							updateStatusTodo={updateStatusTodo}
+							todos={posts}
+							updatePost={updatePost}
+							deletePost={deletePost}
+							updateStatus={updateStatus}
 							search={search}
 						/>
 					</>

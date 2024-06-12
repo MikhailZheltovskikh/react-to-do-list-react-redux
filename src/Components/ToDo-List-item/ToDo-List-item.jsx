@@ -2,9 +2,9 @@ import TodoItem from './TodoItem';
 
 export const ToDoListItem = ({
 	todos,
-	updateTodo,
-	deleteTodo,
-	updateStatusTodo,
+	updatePost,
+	deletePost,
+	updateStatus,
 	search,
 }) => {
 
@@ -24,9 +24,9 @@ export const ToDoListItem = ({
 					<TodoItem
 						{...todo}
 						key={todo.id}
-						updateTodo={updateTodo}
-						deleteTodo={deleteTodo}
-						updateStatusTodo={updateStatusTodo}
+						updatePost={updatePost}
+						deletePost={deletePost}
+						updateStatus={updateStatus}
 					/>
 				))}
 		</>
