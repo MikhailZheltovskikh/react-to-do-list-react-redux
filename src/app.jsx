@@ -2,14 +2,7 @@ import { useEffect, useState } from 'react';
 import styles from './app.module.css';
 import { Form, ToDoListItem, Loader, Serach } from './Components';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-	loadTodo,
-	deleteTodo,
-	updateTodo,
-	updateStatusTodo,
-	creatingTodo,
-	sortTodo,
-} from './store/postReducer';
+import { loadTodo, creatingTodo, sortTodo } from './store/postReducer';
 
 export const App = () => {
 	const [search, setSearch] = useState();
@@ -17,18 +10,6 @@ export const App = () => {
 	const dispatch = useDispatch();
 	const posts = useSelector((state) => state.todo.todos);
 	const isLoading = useSelector((state) => state.todo.isLoading);
-
-	const deletePost = (id) => {
-		dispatch(deleteTodo(id));
-	};
-
-	const updatePost = (id, value) => {
-		dispatch(updateTodo(id, value));
-	};
-
-	const updateStatus = (id, checked) => {
-		dispatch(updateStatusTodo(id, checked));
-	};
 
 	const creating = (event) => {
 		dispatch(creatingTodo(event));
@@ -62,13 +43,7 @@ export const App = () => {
 					<Loader />
 				) : (
 					<>
-						<ToDoListItem
-							todos={posts}
-							updatePost={updatePost}
-							deletePost={deletePost}
-							updateStatus={updateStatus}
-							search={search}
-						/>
+						<ToDoListItem todos={posts} search={search} />
 					</>
 				)}
 			</ul>

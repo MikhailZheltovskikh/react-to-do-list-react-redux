@@ -1,13 +1,6 @@
 import TodoItem from './TodoItem';
 
-export const ToDoListItem = ({
-	todos,
-	updatePost,
-	deletePost,
-	updateStatus,
-	search,
-}) => {
-
+export const ToDoListItem = ({ todos, search }) => {
 	if (!search) {
 		search = '';
 	}
@@ -21,13 +14,7 @@ export const ToDoListItem = ({
 						: item.title.toLowerCase().includes(search);
 				})
 				.map((todo) => (
-					<TodoItem
-						{...todo}
-						key={todo.id}
-						updatePost={updatePost}
-						deletePost={deletePost}
-						updateStatus={updateStatus}
-					/>
+					<TodoItem {...todo} key={todo.id} />
 				))}
 		</>
 	);

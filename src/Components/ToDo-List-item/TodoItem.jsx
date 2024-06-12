@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import styles from './ToDo-List-item.module.css';
+import { useDispatch } from 'react-redux';
+import { deleteTodo, updateTodo, updateStatusTodo } from './../../store/postReducer';
 
+const TodoItem = ({ id, completed, title }) => {
+	const dispatch = useDispatch();
 
-const TodoItem = ({ id, completed, title, updatePost, deletePost, updateStatus }) => {
 	const [isEdit, setIsEdit] = useState(false);
 
 	const [value, setValue] = useState(title);
@@ -16,12 +19,16 @@ const TodoItem = ({ id, completed, title, updatePost, deletePost, updateStatus }
 	};
 
 	const onSubmit = async () => {
-		await updatePost(id, value);
 		handleEdit();
+		dispatch(updateTodo(id, value));
 	};
 
 	const hendelDelete = () => {
-		deletePost(id);
+		dispatch(deleteTodo(id));
+	};
+
+	const updateStatus = (id, checked) => {
+		dispatch(updateStatusTodo(id, checked));
 	};
 
 	return (
@@ -62,8 +69,3 @@ const TodoItem = ({ id, completed, title, updatePost, deletePost, updateStatus }
 };
 
 export default TodoItem;
-
-
-// TodoItem.propTypes ={
-// 	deletePost: PropTypes.func,
-// }
